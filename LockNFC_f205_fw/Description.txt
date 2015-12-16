@@ -1,0 +1,21 @@
+==== Peripherals ====
+Debug uart: UART2
+PN' SPI:    SPI1
+USB
+SDIO
+Main RGB LED: TIM3 Channel 2, 3, 4
+EEPROM: I2C1
+VS sound: SPI2
+Battery measure: ADC1 ch11
+
+==== DMA ====
+I2C1 RX:       DMA1 STREAM0 CH1 
+VS SPI TX:     DMA1 STREAM4 CH0
+Debug UART RX: DMA1 STREAM5 CH4  - Not used
+Debug UART TX: DMA1 STREAM6 CH4
+I2C1 TX:       DMA1 STREAM7 CH1 
+
+ADC1:          DMA2 STREAM0 CH0
+PN SPI RX:     DMA2 STREAM2 CH3 
+SDIO:          DMA2 STREAM3 CH4
+PN SPI TX:     DMA2 STREAM5 CH3 
