@@ -46,6 +46,7 @@ bool SDRead(uint32_t startblk, uint8_t *buffer, uint32_t n) {
 //    PrintfC("\r*%S ", chThdSelf()->p_name);
     msg_t msg = chSemWaitTimeout(&semSDRW, MS2ST(3600));
     if(msg == RDY_OK) {
+//        PrintfC("%u %u\r", startblk, n);
 //        PrintfC(" +%S ", chThdSelf()->p_name);
         bool rslt = sdcRead(&SDCD1, startblk, buffer, n);
         chSemSignal(&semSDRW);

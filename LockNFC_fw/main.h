@@ -21,15 +21,16 @@
 #define DOOR_CLOSE_TIMEOUT      9999    // ms
 
 // Saving last ID to file
-#define SAVE_LAST_ID            TRUE
+#define SAVE_LAST_ID            FALSE
 #if SAVE_LAST_ID
 #define LAST_ID_FILENAME        "Last_ID.txt"
+#endif
+
 // File folders
 #define DIRNAME_GOOD_KEY        "GoodKey"
 #define DIRNAME_BAD_KEY         "BadKey"
 #define DIRNAME_DOOR_CLOSING    "Closing"
 #define DIRNAME_SECRET          "Secret"
-#endif
 
 enum DoorState_t {dsClosed, dsOpen};
 enum AppState_t  {

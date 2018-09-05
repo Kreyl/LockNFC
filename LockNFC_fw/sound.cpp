@@ -89,7 +89,7 @@ void Sound_t::ITask() {
                 if     (Buf1.DataSz == 0) { /*Uart.Printf(" r1");*/ rslt = Buf1.ReadFromFile(&IFile); }
                 else if(Buf2.DataSz == 0) { /*Uart.Printf(" r2");*/ rslt = Buf2.ReadFromFile(&IFile); }
             }
-            if(rslt != FR_OK) Uart.Printf("\rsndReadErr=%u", rslt);
+            if(rslt != FR_OK) Uart.Printf("sndReadErr=%u\r", rslt);
             if(rslt == FR_OK and !Eof) StartTransmissionIfNotBusy();
         }
 #endif
@@ -159,19 +159,19 @@ void Sound_t::IPlayNew() {
 
     FRESULT rslt;
     // Open new file
-    Uart.Printf("\rPlay %S at %u", IFilename, IStartPosition);
+    Uart.Printf("Play %S at %u\r", IFilename, IStartPosition);
     rslt = f_open(&IFile, IFilename, FA_READ+FA_OPEN_EXISTING);
     IFilename = NULL;
     if (rslt != FR_OK) {
-        if (rslt == FR_NO_FILE) Uart.Printf("\r%S: not found", IFilename);
-        else Uart.Printf("\rOpenFile error: %u", rslt);
+        if (rslt == FR_NO_FILE) Uart.Printf("%S: not found\r", IFilename);
+        else Uart.Printf("OpenFile error: %u\r", rslt);
         Stop();
         return;
     }
     // Check if zero file
     if (IFile.fsize == 0) {
         f_close(&IFile);
-        Uart.Printf("\rEmpty file");
+        Uart.Printf("Empty file\r");
         Stop();
         return;
     }

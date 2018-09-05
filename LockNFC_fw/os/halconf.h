@@ -243,6 +243,8 @@
  * SDIO clock divider: SDIO_CK frequency = SDIOCLK / [CLKDIV + 2]
  */
 #define STM32_SDIO_DIV_HS   2   // Work clock:    48MHz / (2+2)   = 12MHz
+//#define STM32_SDIO_DIV_HS   4   // Work clock:    48MHz / (4+2)   = 8MHz
+//#define STM32_SDIO_DIV_HS   6   // Work clock:    48MHz / (6+2)   = 6MHz
 //#define STM32_SDIO_DIV_HS   1   // Work clock:    48MHz / (1+2) = 16MHz. May have problems when AHB < 48MHz
 #define STM32_SDIO_DIV_LS   120 // Initial clock: 48MHz / (120+2) = 393kHz, less than 400
 

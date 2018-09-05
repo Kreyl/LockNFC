@@ -36,15 +36,15 @@ void sd_t::Init() {
     sdcInit();
     sdcStart(&SDCD1, NULL);
     if(sdcConnect(&SDCD1)) {
-        Uart.Printf("\rSD connect error");
+        Uart.Printf("SD connect error\r");
         return;
     }
     else {
-        Uart.Printf("\rSD capacity: %u", SDCD1.capacity);
+        Uart.Printf("SD capacity: %u\r", SDCD1.capacity);
     }
     err = f_mount(0, &SDC_FS);
     if(err != FR_OK) {
-        Uart.Printf("\rSD mount error");
+        Uart.Printf("SD mount error\r");
         sdcDisconnect(&SDCD1);
         return;
     }
@@ -84,7 +84,7 @@ uint8_t iniFile_t::ReadString(const char *ASection, const char *AKey, char **PPO
         if((*StartP != '[') or (*StartP == ';') or (*StartP == '#')) continue;
         EndP = strchr(StartP, ']');
         if((EndP == NULL) or ((int32_t)(EndP-StartP-1) != len)) continue;
-    } while (strnicmp(StartP+1, ASection, len) != 0);
+    } while (strncmp(StartP+1, ASection, len) != 0);
 
     // Section found, find the key
     len = strlen(AKey);
@@ -97,7 +97,7 @@ uint8_t iniFile_t::ReadString(const char *ASection, const char *AKey, char **PPO
         if((*StartP == ';') or (*StartP == '#')) continue;
         EndP = strchr(StartP, '=');
         if(EndP == NULL) continue;
-    } while(((int32_t)(skiptrailing(EndP, StartP)-StartP) != len or strnicmp(StartP, AKey, len) != 0));
+    } while(((int32_t)(skiptrailing(EndP, StartP)-StartP) != len or strncmp(StartP, AKey, len) != 0));
 
     // Process Key's value
     StartP = skipleading(EndP + 1);

@@ -54,13 +54,13 @@ struct ID_t {
 } __attribute__ ((__packed__));
 
 // Array of IDs. Length is templated.
-template <uint32_t TCnt>
+template <int32_t TCnt>
 struct ID_Array_t {
     int32_t Cnt;        // Number of IDs stored
     ID_t ID[TCnt];      // IDs themselves
     void Erase() { Cnt = 0; }
-    bool ContainsID(ID_t &sID, uint32_t *PIndx = nullptr) {
-        for(uint32_t i=0; i<Cnt; i++) {
+    bool ContainsID(ID_t &sID, int32_t *PIndx = nullptr) {
+        for(int32_t i=0; i<Cnt; i++) {
             if(ID[i] == sID) {
                 if(PIndx != nullptr) *PIndx = i;
                 return true;
@@ -84,10 +84,10 @@ struct ID_Array_t {
         }
     }
     uint8_t Remove(ID_t &sID) {
-        uint32_t indx=0;
+        int32_t indx=0;
         if(ContainsID(sID, &indx)) {
             if(indx != (Cnt-1)) {  // Check if not last
-                for(uint32_t i=indx; i<Cnt-1; i++) ID[i] = ID[i+1];
+                for(int32_t i=indx; i<Cnt-1; i++) ID[i] = ID[i+1];
             }
             Cnt--;
             Uart.Printf("\rID removed, count = %u\r", Cnt);
@@ -102,7 +102,7 @@ struct ID_Array_t {
     void Save(const char *GroupName) {
         SD.iniFile.WriteSection(GroupName);
         char *p, IDKey[11] = "ID";
-        for(uint32_t i=0; i<Cnt; i++) {
+        for(int32_t i=0; i<Cnt; i++) {
             p = Convert::Int32ToStr(i, &IDKey[2]);
             *p = 0; // End of string
             SD.iniFile.WriteArray(IDKey, ID[i].ID8, 8);
@@ -135,7 +135,7 @@ private:
 public:
     bool HasChanged;
     // ID operations
-    IdKind_t Check(ID_t &sID, uint32_t *PIndx = nullptr);
+    IdKind_t Check(ID_t &sID, int32_t *PIndx = nullptr);
     uint8_t Add(ID_t &sID, IdKind_t Kind) {
         uint8_t Rslt = FAILURE;
         switch(Kind) {

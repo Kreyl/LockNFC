@@ -9,7 +9,7 @@
 
 //#define DO_NOT_SAVE   // Use this to save Flash when debugging
 
-IdKind_t IDStore_t::Check(ID_t &sID, uint32_t *PIndx) {
+IdKind_t IDStore_t::Check(ID_t &sID, int32_t *PIndx) {
     if     (IDSecret.ContainsID(sID, PIndx))  return ikSecret;
     else if(IDAccess.ContainsID(sID, PIndx))  return ikAccess;
     else if(IDAdder.ContainsID(sID, PIndx))   return ikAdder;
@@ -26,7 +26,7 @@ void IDStore_t::Load() {
         IDRemover.Load(ID_GROUP_NAME_REMOVER);
         IDSecret.Load(ID_GROUP_NAME_SECRET);
         SD.Close();
-        Uart.Printf("\rIDs loaded");
+        Uart.Printf("IDs loaded\r");
     }
 }
 
@@ -38,6 +38,6 @@ void IDStore_t::Save(void) {
         IDRemover.Save(ID_GROUP_NAME_REMOVER);
         IDSecret.Save(ID_GROUP_NAME_SECRET);
         SD.Close();
-        Uart.Printf("\rIDs saved");
+        Uart.Printf("IDs saved\r");
     }
 }

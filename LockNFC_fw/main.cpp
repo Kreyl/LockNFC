@@ -53,7 +53,7 @@ int main() {
     // ==== Init Hard & Soft ====
     App.PThd = chThdSelf();
     Uart.Init(115200);
-    Uart.Printf("\rLockNFC3 F205   AHB freq=%uMHz", Clk.AHBFreqHz/1000000);
+    Uart.Printf("\rLockNFC3 F205   AHB freq=%uMHz\r", Clk.AHBFreqHz/1000000);
     // Report problem with clock if any
     if(ClkResult) Uart.Printf("Clock failure\r");
 
@@ -94,7 +94,7 @@ void App_t::ITask() {
             DoorState = dsOpen;
             Led.StartSequence(lsqDoorOpen); // Set color
             SndList.PlayRandomFileFromDir(DIRNAME_GOOD_KEY);
-            Uart.Printf("\rDoor is open");
+            Uart.Printf("Door is open\r");
             chSysLock();
             if(chVTIsArmedI(&IDoorTmr)) chVTResetI(&IDoorTmr);
             chVTSetI(&IDoorTmr, MS2ST(DOOR_CLOSE_TIMEOUT), TmrGeneralCallback, (void*)EVTMSK_DOOR_SHUT);
@@ -104,13 +104,13 @@ void App_t::ITask() {
             DoorState = dsClosed;
             Led.StartSequence(lsqDoorClose);    // Set color
             SndList.PlayRandomFileFromDir(DIRNAME_DOOR_CLOSING);
-            Uart.Printf("\rDoor is closing");
+            Uart.Printf("Door is closing\r");
         }
 
         if(EvtMsk & EVTMSK_BAD_KEY) {
             Led.StartSequence(lsqDoorWrongKey);
             SndList.PlayRandomFileFromDir(DIRNAME_BAD_KEY);
-            Uart.Printf("\rBadKey");
+            Uart.Printf("BadKey\r");
         }
 #endif
 
@@ -118,7 +118,7 @@ void App_t::ITask() {
         if(EvtMsk & EVTMSK_SECRET_KEY) {
             Led.StartSequence(lsqDoorSecretKey);
             SndList.PlayRandomFileFromDir(DIRNAME_SECRET);
-            Uart.Printf("\rSecretKey");
+            Uart.Printf("SecretKey\r");
         }
 #endif
 
@@ -175,7 +175,7 @@ void App_t::ITask() {
             Usb.Init();
             chThdSleepMilliseconds(540);
             Usb.Connect();
-            Uart.Printf("\rUsb connected, AHB freq=%uMHz", Clk.AHBFreqHz/1000000);
+            Uart.Printf("Usb connected, AHB freq=%uMHz\r", Clk.AHBFreqHz/1000000);
         }
         if(EvtMsk & EVTMSK_USB_DISCONNECTED) {
             Usb.Shutdown();
@@ -184,7 +184,7 @@ void App_t::ITask() {
             Clk.SetFreq12Mhz();
             Clk.InitSysTick();
             chSysUnlock();
-            Uart.Printf("\rUsb disconnected, AHB freq=%uMHz", Clk.AHBFreqHz/1000000);
+            Uart.Printf("Usb disconnected, AHB freq=%uMHz\r", Clk.AHBFreqHz/1000000);
         }
 #endif
 
