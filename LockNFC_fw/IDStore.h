@@ -47,7 +47,7 @@ struct ID_t {
         memcpy(ID8, p, 8);
         chSysUnlock();
     }
-    void Print() { Uart.Printf("\r%04X %04X", ID32[0], ID32[1]); }
+    void Print() { Uart.Printf("\r%04X %04X\r", ID32[0], ID32[1]); }
     bool operator == (const ID_t &AID) { return (ID32[0] == AID.ID32[0]) and (ID32[1] == AID.ID32[1]); }
     bool operator != (const ID_t &AID) { return (ID32[0] != AID.ID32[0]) or  (ID32[1] != AID.ID32[1]); }
     ID_t& operator = (const ID_t &AID) { ID32[0] = AID.ID32[0]; ID32[1] = AID.ID32[1]; return *this; }

@@ -72,7 +72,7 @@ int main() {
     Sound.Init();
     Sound.SetVolume(250);
     Sound.RegisterAppThd(chThdSelf());
-    Sound.Play("alive.wav");
+//    Sound.Play("alive.wav");
 
 #if USB_ENABLED
     MassStorage.Init(); // Init USB MassStorage device
@@ -93,23 +93,23 @@ void App_t::ITask() {
         if(EvtMsk & EVTMSK_DOOR_OPEN) {
             DoorState = dsOpen;
             Led.StartSequence(lsqDoorOpen); // Set color
-            SndList.PlayRandomFileFromDir(DIRNAME_GOOD_KEY);
+//            SndList.PlayRandomFileFromDir(DIRNAME_GOOD_KEY);
             Uart.Printf("Door is open\r");
-            chSysLock();
-            if(chVTIsArmedI(&IDoorTmr)) chVTResetI(&IDoorTmr);
-            chVTSetI(&IDoorTmr, MS2ST(DOOR_CLOSE_TIMEOUT), TmrGeneralCallback, (void*)EVTMSK_DOOR_SHUT);
-            chSysUnlock();
+//            chSysLock();
+//            if(chVTIsArmedI(&IDoorTmr)) chVTResetI(&IDoorTmr);
+//            chVTSetI(&IDoorTmr, MS2ST(DOOR_CLOSE_TIMEOUT), TmrGeneralCallback, (void*)EVTMSK_DOOR_SHUT);
+//            chSysUnlock();
         }
         if(EvtMsk & EVTMSK_DOOR_SHUT) {
             DoorState = dsClosed;
             Led.StartSequence(lsqDoorClose);    // Set color
-            SndList.PlayRandomFileFromDir(DIRNAME_DOOR_CLOSING);
+//            SndList.PlayRandomFileFromDir(DIRNAME_DOOR_CLOSING);
             Uart.Printf("Door is closing\r");
         }
 
         if(EvtMsk & EVTMSK_BAD_KEY) {
             Led.StartSequence(lsqDoorWrongKey);
-            SndList.PlayRandomFileFromDir(DIRNAME_BAD_KEY);
+//            SndList.PlayRandomFileFromDir(DIRNAME_BAD_KEY);
             Uart.Printf("BadKey\r");
         }
 #endif
@@ -117,7 +117,7 @@ void App_t::ITask() {
 #if 1 // ==== Secret key ====
         if(EvtMsk & EVTMSK_SECRET_KEY) {
             Led.StartSequence(lsqDoorSecretKey);
-            SndList.PlayRandomFileFromDir(DIRNAME_SECRET);
+//            SndList.PlayRandomFileFromDir(DIRNAME_SECRET);
             Uart.Printf("SecretKey\r");
         }
 #endif
@@ -251,7 +251,7 @@ void App_t::ShowAddRemoveResult(AddRemoveResult_t Rslt) {
 #endif
 
 void App_t::ProcessCardAppearance() {
-//    App.CurrentID.Print();
+    App.CurrentID.Print();
 #if SAVE_LAST_ID
     if(LastID != CurrentID) {
         LastID = CurrentID;
@@ -266,9 +266,13 @@ void App_t::ProcessCardAppearance() {
     IdKind_t IdKind = IDStore.Check(CurrentID);
     switch(State) {
         case asIdle:
+            if(IdKind == ikAccess) {
+                if(DoorState == dsClosed) SendEvt(EVTMSK_DOOR_OPEN);
+                else SendEvt(EVTMSK_DOOR_SHUT);
+            }
             if(DoorState == dsClosed) {
                 switch(IdKind) {
-                    case ikAccess:  SendEvt(EVTMSK_DOOR_OPEN); break;
+                    case ikAccess:  /*SendEvt(EVTMSK_DOOR_OPEN);*/ break;
                     case ikSecret:  SendEvt(EVTMSK_SECRET_KEY); break;
                     case ikAdder:   EnterState(asAddingAccess); break;
                     case ikRemover: EnterState(asRemovingAccess); break;
